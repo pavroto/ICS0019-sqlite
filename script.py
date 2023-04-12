@@ -7,6 +7,8 @@ DATABASE_NAME = "DINERS.db"
 SCRIPT_DIRECTORY = join(getcwd(), "sql-scripts")
 CREATE_TABLE_CANTEEN = "create-table-CANTEEN.sql"
 CREATE_TABLE_PROVIDER = "create-table-PROVIDER.sql"
+INSERT_DATA_CANTEEN = "insert-data-CANTEEN.sql"
+INSERT_DATA_PROVIDER = "insert-data-PROVIDER.sql"
 
 
 def create_database():
@@ -18,7 +20,7 @@ def create_database():
     cur = connection.cursor()
 
     # Creating tables #
-    for i in [CREATE_TABLE_PROVIDER, CREATE_TABLE_CANTEEN]:
+    for i in [CREATE_TABLE_PROVIDER, CREATE_TABLE_CANTEEN, INSERT_DATA_PROVIDER, INSERT_DATA_CANTEEN]:
         try:
             script = return_script(i)
             cur.execute(script)
