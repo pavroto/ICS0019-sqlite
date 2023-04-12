@@ -5,10 +5,13 @@ from os.path import join
 DATABASE_NAME = "DINERS.db"
 
 SCRIPT_DIRECTORY = join(getcwd(), "sql-scripts")
+
 CREATE_TABLE_CANTEEN = "create-table-CANTEEN.sql"
 CREATE_TABLE_PROVIDER = "create-table-PROVIDER.sql"
 INSERT_DATA_CANTEEN = "insert-data-CANTEEN.sql"
 INSERT_DATA_PROVIDER = "insert-data-PROVIDER.sql"
+
+SELECT_NINE_FOUR = "select-nine-four.sql"
 
 
 def create_database():
@@ -33,8 +36,22 @@ def create_database():
 
     connection.commit()
 
+    select_query_execution(cur)
+
     cur.close()
     connection.close()
+
+
+def select_query_execution(cur):
+    for i in [SELECT_NINE_FOUR]:
+        try:
+            script = return_script(i)
+            print(cur.execute(script).fetchall())
+
+        except FileNotFoundError as e:
+            cur.close()
+            print(e)
+            return
 
 
 def return_script(name):
