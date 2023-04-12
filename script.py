@@ -12,6 +12,7 @@ INSERT_DATA_CANTEEN = "insert-data-CANTEEN.sql"
 INSERT_DATA_PROVIDER = "insert-data-PROVIDER.sql"
 
 SELECT_NINE_FOUR = "select-nine-four.sql"
+SELECT_BALTIC = "select-baltic.sql"
 
 
 def create_database():
@@ -43,7 +44,7 @@ def create_database():
 
 
 def select_query_execution(cur):
-    for i in [SELECT_NINE_FOUR]:
+    for i in [SELECT_NINE_FOUR, SELECT_BALTIC]:
         try:
             script = return_script(i)
             print(cur.execute(script).fetchall())
