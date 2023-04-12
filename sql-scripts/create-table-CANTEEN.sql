@@ -3,9 +3,8 @@ CREATE TABLE CANTEEN
     ID INTEGER PRIMARY KEY ASC,
     ProviderID INTEGER,
     Name TEXT,
-    Location,
-    time_open,
-    time_closed
-
+    Location TEXT,
+    time_open TIME,
+    time_closed TIME,
     FOREIGN KEY(ProviderID) REFERENCES PROVIDER(ID)
 );

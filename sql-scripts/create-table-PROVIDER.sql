@@ -1,0 +1,5 @@
+CREATE TABLE PROVIDER
+(
+      ID INTEGER PRIMARY KEY ASC,
+      ProviderName TEXT
+);
