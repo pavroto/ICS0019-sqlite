@@ -1,6 +1,9 @@
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Time
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Time, type_coerce
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.orm import sessionmaker
+
+from sqlalchemy import join
+from sqlalchemy.sql import select
 
 from datetime import time
 
@@ -10,7 +13,7 @@ f = open(DATABASE_NAME, "w")  # recreate .db file
 f.close()
 
 # Create Database
-engine = create_engine(f'sqlite:///{DATABASE_NAME}', echo=True)
+engine = create_engine(f'sqlite:///{DATABASE_NAME}')
 Base = declarative_base()
 
 
@@ -42,7 +45,7 @@ def return_provider_id(provider_name):
 
     try:
         result = session.query(Provider).filter_by(ProviderName=provider_name)
-    except TypeError:
+    except:
         session.rollback()
         raise
     finally:
@@ -137,3 +140,39 @@ conn.commit()
 conn.close()
 
 # Select Data todo
+
+def select_nine_four():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    try:
+        result = session.query(Canteen).filter(type_coerce(Canteen.time_open, Time) <= time(9,0), type_coerce(Canteen.time_closed, Time) >= time(16,20))
+    except:
+        session.rollback()
+        raise
+    finally:
+        session.close()
+
+    for row in result:
+        print(row.ID, "|", row.Name, "|", row.time_open, "|", row.time_closed)
+
+
+def select_baltic():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    try:
+        result = session.query(Canteen, Provider).join(Provider, Canteen.ProviderID==Provider.ID).filter_by(ProviderName="Baltic Restaurants Estonia AS")
+    except:
+        session.rollback()
+        raise
+    finally:
+        session.close()
+
+    for row in result:
+        print(row.Canteen.ID, "|", row.Canteen.Name, "|", row.Provider.ProviderName, "|", row.Canteen.time_open, "|", row.Canteen.time_closed)
+
+
+select_nine_four()
+print()
+select_baltic()
